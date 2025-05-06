@@ -35,6 +35,16 @@ class _StructureState extends ConsumerState<Structure> {
     const PlanningPage(),
     const GraphsPage(),
   ];
+  
+  @override
+  void initState() {
+    super.initState();
+    // Check if user is logged in - can be expanded with actual authentication logic
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Uncomment this to test login flow during development
+      // Navigator.of(context).pushReplacementNamed('/login');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

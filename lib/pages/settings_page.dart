@@ -20,6 +20,12 @@ import '../ui/device.dart';
 
 var settingsOptions = [
   [
+    Icons.logout,
+    "Déconnexion",
+    "Se déconnecter de l'application",
+    "/login",
+  ],
+  [
     Icons.settings,
     "General Settings",
     "Edit general settings",
@@ -178,6 +184,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                         if (link.startsWith("http")) {
                           Uri url = Uri.parse(link);
                           launchUrl(url);
+                        } else if (link == '/login') {
+                          // Use pushReplacementNamed for logout to prevent going back
+                          Navigator.of(context).pushReplacementNamed(link);
                         } else {
                           Navigator.of(context).pushNamed(link);
                         }

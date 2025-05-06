@@ -86,3 +86,20 @@ const darkAccount2 = Color(0xFFDC7807);
 const darkAccount3 = Color(0xFF33679B);
 const darkAccount4 = Color(0xFF61B4DB);
 const darkAccount5 = Color(0xFF398F10);
+
+
+// Ajouter à la fin du fichier
+class 
+MySizes {
+  // Spacing
+  static const double xs = 4.0;
+  static const double sm = 8.0;
+  static const double md = 16.0;
+  static const double lg = 24.0;
+  static const double xl = 32.0;
+  
+  // Border radius
+  static const double borderRadiusSmall = 8.0;
+  static const double borderRadiusMedium = 16.0;
+  static const double borderRadiusLarge = 24.0;
+}

@@ -64,18 +64,15 @@ class Launcher extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isOnboardingCompleted =
-        _sharedPreferences.getBool('onboarding_completed') ?? false;
-
     final appThemeState = ref.watch(appThemeStateNotifier);
     return MaterialApp(
-      title: 'Sossoldi',
+      title: 'Ibis Transport',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode:
           appThemeState.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
       onGenerateRoute: makeRoute,
-      initialRoute: !isOnboardingCompleted ? '/onboarding' : '/',
+      initialRoute: '/login',
     );
   }
 }

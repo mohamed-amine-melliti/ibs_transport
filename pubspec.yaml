@@ -1,4 +1,4 @@
-name: sossoldi
+name: Ibis_Transport
 description: A wealth management / personal finance / net worth tracking app.
 
 publish_to: "none"
@@ -33,6 +33,7 @@ dependencies:
   sqlite3_flutter_libs:
   timezone: ^0.10.0
   url_launcher: ^6.3.1
+  moon_design: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -95,10 +96,10 @@ flutter:
 flutter_native_splash:
   web: false
   color: "#ffffff"
-  image: assets/splash.png
+  image: assets/ulmus.png
   android_12:
     color: "#ffffff"
-    image: assets/android12splash.png
+    image: assets/ulmus.png
 
 flutter_icons:
   android: true
@@ -106,7 +107,7 @@ flutter_icons:
   web:
     generate: false
   remove_alpha_ios: true
-  image_path: "assets/icon.png"
-  image_path_ios: "assets/iosicon.png"
+  image_path: "assets/ulmus.png"
+  image_path_ios: "assets/ulmus.png"
   adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: "assets/icon.png"
+  adaptive_icon_foreground: "assets/ulmus.png"

@@ -9,6 +9,7 @@ import 'pages/accounts/add_account.dart';
 import 'pages/add_page/add_page.dart';
 import 'pages/categories/add_category.dart';
 import 'pages/categories/category_list.dart';
+import 'pages/collecte_page.dart'; // Ajouter cet import
 import 'pages/general_options/general_settings.dart';
 import 'pages/graphs_page/graphs_page.dart';
 import 'pages/home_page.dart';
@@ -24,6 +25,11 @@ import 'pages/structure.dart';
 import 'pages/transactions_page/transactions_page.dart';
 import 'pages/planning_page/widget/edit_recurring_transaction.dart';
 import 'pages/backup_page/backup_page.dart';
+import 'pages/tour_page.dart';
+import 'ui/login_page.dart';
+import 'pages/tour_stepper_page.dart'; // Ajouter cet import
+
+// Import the LoginPage
 
 Route<dynamic> makeRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -33,6 +39,10 @@ Route<dynamic> makeRoute(RouteSettings settings) {
       return buildAdaptiveRoute(settings.name, const Onboarding());
     case '/dashboard':
       return buildAdaptiveRoute(settings.name, const HomePage());
+    case '/login': // Add route for login page
+      return buildAdaptiveRoute(settings.name, const LoginPage());  // Add your LoginPage route here
+    case '/tour': // Route for tour page
+      return buildAdaptiveRoute(settings.name, const TourStepperPage()); // Remplacer TourPage par TourStepperPage
     case '/add-page':
       Map<String, bool>? args;
       if (settings.arguments is Map<String, bool>?) {
@@ -85,6 +95,14 @@ Route<dynamic> makeRoute(RouteSettings settings) {
       return buildAdaptiveRoute(settings.name, const SearchPage());
     case '/backup-page':
       return buildAdaptiveRoute(settings.name, const BackupPage());
+    case '/collecte':
+      final args = settings.arguments as Map<String, dynamic>;
+      return MaterialPageRoute(
+        builder: (context) => CollectePage(
+          passageId: args['passageId'] as String,
+          clientName: args['clientName'] as String,
+        ),
+      );
     default:
       throw 'Route is not defined';
   }
@@ -113,5 +131,12 @@ PageRoute _materialPageRoute(String? routeName, Widget viewToShow) {
       name: routeName,
     ),
     builder: (_) => viewToShow,
+  );
+}
+// Ajouter cette route
+if (settings.name == '/collecte') {
+  return MaterialPageRoute(
+    builder: (context) => const CollectePage(),
+    settings: settings,
   );
 }
