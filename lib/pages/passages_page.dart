@@ -360,11 +360,11 @@ class _PassagesPageState extends ConsumerState<PassagesPage> {
               ),
               // Add more space before the buttons
               const SizedBox(height: MySizes.xl),
-              // Buttons section with improved styling
+              // Buttons section with smaller styling
               if (passage.status == PassageStatus.termine)
                 Container(
                   width: double.infinity,
-                  margin: const EdgeInsets.only(bottom: MySizes.lg),
+                  margin: const EdgeInsets.only(bottom: MySizes.md),
                   child: ElevatedButton.icon(
                     onPressed: () {
                       // Logique pour remettre en attente
@@ -387,14 +387,14 @@ class _PassagesPageState extends ConsumerState<PassagesPage> {
                         ref.read(passagesProvider.notifier).state = passages;
                       }
                     },
-                    icon: const Icon(Icons.restore, size: 24),
+                    icon: const Icon(Icons.restore, size: 20),
                     label: const Text('Remettre en attente', 
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: MySizes.lg),
-                      elevation: 3,
+                      padding: const EdgeInsets.symmetric(vertical: MySizes.md),
+                      elevation: 2,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(MySizes.borderRadiusSmall),
                       ),
@@ -405,7 +405,7 @@ class _PassagesPageState extends ConsumerState<PassagesPage> {
               if (passage.status == PassageStatus.enAttente)
                 Container(
                   width: double.infinity,
-                  margin: const EdgeInsets.only(bottom: MySizes.lg),
+                  margin: const EdgeInsets.only(bottom: MySizes.md),
                   child: ElevatedButton.icon(
                     onPressed: () {
                       // Logique pour marquer comme en cours
@@ -428,14 +428,14 @@ class _PassagesPageState extends ConsumerState<PassagesPage> {
                         ref.read(passagesProvider.notifier).state = passages;
                       }
                     },
-                    icon: const Icon(Icons.play_arrow, size: 24),
+                    icon: const Icon(Icons.play_arrow, size: 20),
                     label: const Text('Démarrer le passage', 
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: MySizes.lg),
-                      elevation: 3,
+                      padding: const EdgeInsets.symmetric(vertical: MySizes.md),
+                      elevation: 2,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(MySizes.borderRadiusSmall),
                       ),
@@ -446,7 +446,7 @@ class _PassagesPageState extends ConsumerState<PassagesPage> {
                   passage.status == PassageStatus.enCours)
                 Container(
                   width: double.infinity,
-                  margin: const EdgeInsets.only(bottom: MySizes.lg),
+                  margin: const EdgeInsets.only(bottom: MySizes.md),
                   child: ElevatedButton.icon(
                     onPressed: () {
                       // Logique pour marquer comme terminé
@@ -469,14 +469,14 @@ class _PassagesPageState extends ConsumerState<PassagesPage> {
                         ref.read(passagesProvider.notifier).state = passages;
                       }
                     },
-                    icon: const Icon(Icons.check_circle, size: 24),
+                    icon: const Icon(Icons.check_circle, size: 20),
                     label: const Text('Marquer comme terminé', 
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: MySizes.lg),
-                      elevation: 3,
+                      padding: const EdgeInsets.symmetric(vertical: MySizes.md),
+                      elevation: 2,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(MySizes.borderRadiusSmall),
                       ),
@@ -498,17 +498,16 @@ class _PassagesPageState extends ConsumerState<PassagesPage> {
                         },
                       );
                     },
-                    icon: const Icon(Icons.add_box, size: 24),
+                    icon: const Icon(Icons.add_box, size: 20),
                     label: const Text('Saisir une collecte',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                      padding: const EdgeInsets.symmetric(vertical: MySizes.lg),
-                      elevation: 3,
+                      padding: const EdgeInsets.symmetric(vertical: MySizes.md),
+                      elevation: 2,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(MySizes.borderRadiusSmall),
-
                       ),
                     ),
                   ),

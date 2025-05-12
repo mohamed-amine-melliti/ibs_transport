@@ -38,7 +38,7 @@ Route<dynamic> makeRoute(RouteSettings settings) {
     case '/onboarding':
       return buildAdaptiveRoute(settings.name, const Onboarding());
     case '/dashboard':
-      return buildAdaptiveRoute(settings.name, const HomePage());
+      return buildAdaptiveRoute(settings.name, const TourStepperPage()); // Remplacer TourPage par TourStepperPage
     case '/login': // Add route for login page
       return buildAdaptiveRoute(settings.name, const LoginPage());  // Add your LoginPage route here
     case '/tour': // Route for tour page

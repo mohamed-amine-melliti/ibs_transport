@@ -64,8 +64,8 @@ final currentTourProvider = StateProvider<Tour?>((ref) {
     id: 'T-12345',
     status: TourStatus.enCours,
     vehicle: 'Camion 42',
-    driver: 'Jean Dupont',
-    convoyeurs: ['Marie Martin', 'Pierre Durand'],
+    driver: 'Amine Melliti',
+    convoyeurs: ['Mr Sami Bali', 'Majdi Melliti'],
     completedPassages: 8,
     totalPassages: 15,
   );

@@ -66,7 +66,7 @@ class TourStepperPage extends ConsumerWidget {
                   onPressed: () {
                     ref.read(currentStepProvider.notifier).state = currentStep - 1;
                   },
-                  icon: const Icon(Icons.arrow_back, size: 18), // Réduit la taille de l'icône
+                 // icon: const Icon(Icons.arrow_back, size: 18), // Réduit la taille de l'icône
                   label: const Text('Précédent', style: TextStyle(fontSize: 14)), // Réduit la taille du texte
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: MySizes.md, vertical: MySizes.xs), // Réduit le padding
