@@ -133,10 +133,4 @@ PageRoute _materialPageRoute(String? routeName, Widget viewToShow) {
     builder: (_) => viewToShow,
   );
 }
-// Ajouter cette route
-if (settings.name == '/collecte') {
-  return MaterialPageRoute(
-    builder: (context) => const CollectePage(),
-    settings: settings,
-  );
-}
+

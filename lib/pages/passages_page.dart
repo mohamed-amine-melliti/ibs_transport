@@ -128,11 +128,16 @@ class PassagesPage extends ConsumerStatefulWidget {
 }
 
 class _PassagesPageState extends ConsumerState<PassagesPage> {
+  // Clé pour le Scaffold pour pouvoir ouvrir le drawer
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  
   @override
   Widget build(BuildContext context) {
     final passages = ref.watch(passagesProvider);
+    final selectedPassage = ref.watch(selectedPassageProvider);
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Passages Ibis Transport'),
         actions: [
@@ -145,6 +150,8 @@ class _PassagesPageState extends ConsumerState<PassagesPage> {
           ),
         ],
       ),
+      // Ajout du drawer qui s'ouvre de la gauche vers la droite
+      endDrawer: selectedPassage != null ? _buildPassageDetailsDrawer(context, selectedPassage) : null,
       body: passages.isEmpty
           ? const Center(child: Text('Aucun passage à afficher'))
           : ListView.builder(
@@ -164,9 +171,9 @@ class _PassagesPageState extends ConsumerState<PassagesPage> {
       padding: const EdgeInsets.only(bottom: MySizes.md),
       child: DefaultCard(
         onTap: () {
-          // Sélectionner le passage et afficher les détails
+          // Sélectionner le passage et ouvrir le drawer au lieu du bottom sheet
           ref.read(selectedPassageProvider.notifier).state = passage;
-          _showPassageDetails(context, passage);
+          _scaffoldKey.currentState?.openEndDrawer();
         },
         child: Padding(
           padding: const EdgeInsets.all(MySizes.md),
@@ -242,7 +249,7 @@ class _PassagesPageState extends ConsumerState<PassagesPage> {
       padding:
           const EdgeInsets.symmetric(horizontal: MySizes.sm, vertical: MySizes.xs),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(MySizes.borderRadiusSmall),
       ),
       child: Row(
@@ -263,167 +270,250 @@ class _PassagesPageState extends ConsumerState<PassagesPage> {
     );
   }
 
-  void _showPassageDetails(BuildContext context, Passage passage) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-      ),
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.6,
-        minChildSize: 0.3,
-        maxChildSize: 0.9,
-        expand: false,
-        builder: (context, scrollController) => SingleChildScrollView(
-          controller: scrollController,
-          child: Padding(
-            padding: const EdgeInsets.all(MySizes.lg),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.3),
-                      borderRadius:
-                          BorderRadius.circular(MySizes.borderRadiusSmall),
+  // Nouveau widget pour le drawer des détails de passage
+  Widget _buildPassageDetailsDrawer(BuildContext context, Passage passage) {
+    return Drawer(
+      width: MediaQuery.of(context).size.width * 0.85, // Largeur du drawer
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(MySizes.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Détails du passage Ibis',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: MySizes.sm, vertical: MySizes.xs),
+                decoration: BoxDecoration(
+                  color: passage.status.getColor(context).withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(MySizes.borderRadiusSmall),
+                ),
+                child: Text(
+                  passage.status.label,
+                  style: TextStyle(
+                    color: passage.status.getColor(context),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(height: MySizes.lg),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildDetailRow(context, 'ID', passage.id),
+                      _buildDetailRow(context, 'Client', passage.clientName),
+                      _buildDetailRow(context, 'Type', passage.type),
+                      _buildDetailRow(context, 'Code', passage.code),
+                      _buildDetailRow(context, 'Montant', '${passage.montant.toStringAsFixed(2)} €'),
+                      const Divider(height: MySizes.xl),
+                      Text(
+                        'Objets sécurisés',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: MySizes.sm),
+                      passage.objetsCollectes.isEmpty
+                          ? const Text('Aucun objet sécurisé transporté')
+                          : Column(
+                              children: passage.objetsCollectes
+                                  .map((objet) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: MySizes.xs),
+                                        child: Row(
+                                          children: [
+                                            const Icon(Icons.security,
+                                                size: 16, color: Colors.green),
+                                            const SizedBox(width: MySizes.xs),
+                                            Text(objet),
+                                          ],
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                      const SizedBox(height: MySizes.lg),
+                      Text(
+                        'Résultat',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: MySizes.sm),
+                      Text(passage.resultat.isEmpty
+                          ? 'Pas encore de résultat'
+                          : passage.resultat),
+                    ],
+                  ),
+                ),
+              ),
+              // Add more space before the buttons
+              const SizedBox(height: MySizes.xl),
+              // Buttons section with improved styling
+              if (passage.status == PassageStatus.termine)
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(bottom: MySizes.lg),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      // Logique pour remettre en attente
+                      Navigator.pop(context);
+                      // Mettre à jour le statut du passage
+                      final passages = [...ref.read(passagesProvider)];
+                      final index =
+                          passages.indexWhere((p) => p.id == passage.id);
+                      if (index != -1) {
+                        passages[index] = Passage(
+                          id: passage.id,
+                          clientName: passage.clientName,
+                          type: passage.type,
+                          code: passage.code,
+                          status: PassageStatus.enAttente,
+                          objetsCollectes: passage.objetsCollectes,
+                          resultat: '',
+                          montant: passage.montant,
+                        );
+                        ref.read(passagesProvider.notifier).state = passages;
+                      }
+                    },
+                    icon: const Icon(Icons.restore, size: 24),
+                    label: const Text('Remettre en attente', 
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: MySizes.lg),
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(MySizes.borderRadiusSmall),
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(height: MySizes.lg),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Détails du passage Ibis',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: MySizes.sm, vertical: MySizes.xs),
-                      decoration: BoxDecoration(
-                        color:
-                            passage.status.getColor(context).withOpacity(0.2),
-                        borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(MySizes.borderRadiusMedium)),
-                      ),
-                      child: Text(
-                        passage.status.label,
-                        style: TextStyle(
-                          color: passage.status.getColor(context),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: MySizes.lg),
-                _buildDetailRow(context, 'ID', passage.id),
-                _buildDetailRow(context, 'Client', passage.clientName),
-                _buildDetailRow(context, 'Type', passage.type),
-                _buildDetailRow(context, 'Code', passage.code),
-                _buildDetailRow(context, 'Montant', '${passage.montant.toStringAsFixed(2)} €'),
-                const Divider(height: MySizes.xl),
-                Text(
-                  'Objets sécurisés',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: MySizes.sm),
-                passage.objetsCollectes.isEmpty
-                    ? const Text('Aucun objet sécurisé transporté')
-                    : Column(
-                        children: passage.objetsCollectes
-                            .map((objet) => Padding(
-                                  padding:
-                                      const EdgeInsets.only(bottom: MySizes.xs),
-                                  child: Row(
-                                    children: [
-                                      const Icon(Icons.security,
-                                          size: 16, color: Colors.green),
-                                      const SizedBox(width: MySizes.xs),
-                                      Text(objet),
-                                    ],
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                const SizedBox(height: MySizes.lg),
-                Text(
-                  'Résultat',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: MySizes.sm),
-                Text(passage.resultat.isEmpty
-                    ? 'Pas encore de résultat'
-                    : passage.resultat),
-                const SizedBox(height: MySizes.xl),
-                if (passage.status == PassageStatus.enAttente ||
-                    passage.status == PassageStatus.enCours)
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        // Logique pour marquer comme terminé
-                        Navigator.pop(context);
-                        // Mettre à jour le statut du passage
-                        final passages = [...ref.read(passagesProvider)];
-                        final index =
-                            passages.indexWhere((p) => p.id == passage.id);
-                        if (index != -1) {
-                          passages[index] = Passage(
-                            id: passage.id,
-                            clientName: passage.clientName,
-                            type: passage.type,
-                            code: passage.code,
-                            status: PassageStatus.termine,
-                            objetsCollectes: passage.objetsCollectes,
-                            resultat: 'Transport sécurisé complété',
-                            montant: passage.montant,
-                          );
-                          ref.read(passagesProvider.notifier).state = passages;
-                        }
-                      },
-                      icon: const Icon(Icons.check_circle),
-                      label: const Text('Marquer comme terminé'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: MySizes.md),
+              // New button for changing status to "En Cours"
+              if (passage.status == PassageStatus.enAttente)
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(bottom: MySizes.lg),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      // Logique pour marquer comme en cours
+                      Navigator.pop(context);
+                      // Mettre à jour le statut du passage
+                      final passages = [...ref.read(passagesProvider)];
+                      final index =
+                          passages.indexWhere((p) => p.id == passage.id);
+                      if (index != -1) {
+                        passages[index] = Passage(
+                          id: passage.id,
+                          clientName: passage.clientName,
+                          type: passage.type,
+                          code: passage.code,
+                          status: PassageStatus.enCours,
+                          objetsCollectes: passage.objetsCollectes,
+                          resultat: '',
+                          montant: passage.montant,
+                        );
+                        ref.read(passagesProvider.notifier).state = passages;
+                      }
+                    },
+                    icon: const Icon(Icons.play_arrow, size: 24),
+                    label: const Text('Démarrer le passage', 
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: MySizes.lg),
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(MySizes.borderRadiusSmall),
                       ),
                     ),
                   ),
-                  // Dans la méthode _showPassageDetails, ajoutez ce bouton avant le bouton "Marquer comme terminé" :
-                  if (passage.status == PassageStatus.enCours)
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushNamed(
-                            context,
-                            '/collecte',
-                            arguments: {
-                              'passageId': passage.id,
-                              'clientName': passage.clientName,
-                            },
-                          );
+                ),
+              if (passage.status == PassageStatus.enAttente ||
+                  passage.status == PassageStatus.enCours)
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(bottom: MySizes.lg),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      // Logique pour marquer comme terminé
+                      Navigator.pop(context);
+                      // Mettre à jour le statut du passage
+                      final passages = [...ref.read(passagesProvider)];
+                      final index =
+                          passages.indexWhere((p) => p.id == passage.id);
+                      if (index != -1) {
+                        passages[index] = Passage(
+                          id: passage.id,
+                          clientName: passage.clientName,
+                          type: passage.type,
+                          code: passage.code,
+                          status: PassageStatus.termine,
+                          objetsCollectes: passage.objetsCollectes,
+                          resultat: 'Transport sécurisé complété',
+                          montant: passage.montant,
+                        );
+                        ref.read(passagesProvider.notifier).state = passages;
+                      }
+                    },
+                    icon: const Icon(Icons.check_circle, size: 24),
+                    label: const Text('Marquer comme terminé', 
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: MySizes.lg),
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(MySizes.borderRadiusSmall),
+                      ),
+                    ),
+                  ),
+                ),
+              if (passage.status == PassageStatus.enCours)
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(
+                        context,
+                        '/collecte',
+                        arguments: {
+                          'passageId': passage.id,
+                          'clientName': passage.clientName,
                         },
-                        icon: const Icon(Icons.add_box),
-                        label: const Text('Saisir une collecte'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                          padding: const EdgeInsets.symmetric(vertical: MySizes.md),
-                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.add_box, size: 24),
+                    label: const Text('Saisir une collecte',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      padding: const EdgeInsets.symmetric(vertical: MySizes.lg),
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(MySizes.borderRadiusSmall),
+
                       ),
                     ),
                   ),
-                const SizedBox(height: MySizes.md),
-              ],
-            ),
+                ),
+            ],
           ),
         ),
       ),

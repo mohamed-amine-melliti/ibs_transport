@@ -89,7 +89,15 @@ final objetsCollectesProvider = StateProvider<List<ObjetCollecte>>((ref) => []);
 final codeBarresScanneProvider = StateProvider<String?>((ref) => null);
 
 class CollectePage extends ConsumerStatefulWidget {
-  const CollectePage({super.key});
+  final String passageId;
+  final String clientName;
+
+  const CollectePage({
+    required this.passageId,
+    required this.clientName,
+    super.key,
+  });
+
 
   @override
   ConsumerState<CollectePage> createState() => _CollectePageState();
@@ -149,7 +157,7 @@ class _CollectePageState extends ConsumerState<CollectePage> {
       final collecteTerminee = Collecte(
         id: collecte.id,
         clientName: collecte.clientName,
-        status: CollecteStatus.realisee,
+        status: CollecteStatus.enCours,
         objetsCollectes: collecte.objetsCollectes,
         dateDebut: collecte.dateDebut,
         dateFin: DateTime.now(),
@@ -513,6 +521,7 @@ class _CollectePageState extends ConsumerState<CollectePage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: MySizes.md),
       child: DefaultCard(
+        onTap: () {},
         child: Padding(
           padding: const EdgeInsets.all(MySizes.md),
           child: Column(
@@ -601,7 +610,7 @@ class _CollectePageState extends ConsumerState<CollectePage> {
       padding:
           const EdgeInsets.symmetric(horizontal: MySizes.sm, vertical: MySizes.xs),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(MySizes.borderRadiusSmall),
       ),
       child: Row(

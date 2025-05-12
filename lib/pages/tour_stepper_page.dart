@@ -125,7 +125,7 @@ class TourStepperPage extends ConsumerWidget {
                 ? Theme.of(context).colorScheme.primary 
                 : isCompleted 
                   ? Colors.green 
-                  : Theme.of(context).colorScheme.surfaceVariant,
+                  : Theme.of(context).colorScheme.surfaceContainerHighest,
               shape: BoxShape.circle,
               // Ajout d'une bordure pour plus de clarté
               border: Border.all(
@@ -185,7 +185,7 @@ class TourStepperPage extends ConsumerWidget {
       height: 2,
       color: isCompleted 
         ? Colors.green 
-        : Theme.of(context).colorScheme.surfaceVariant,
+        : Theme.of(context).colorScheme.surfaceContainerHighest,
     );
   }
 }

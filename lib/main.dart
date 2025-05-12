@@ -14,48 +14,79 @@ import 'utils/notifications_service.dart';
 
 late SharedPreferences _sharedPreferences;
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  NotificationService().requestNotificationPermissions();
-  NotificationService().initializeNotifications();
-  tz.initializeTimeZones();
-  tz.setLocalLocation(tz.local);
+  runApp(Phoenix(child: const ProviderScope(child: AppInitializer())));
+}
 
-  _sharedPreferences = await SharedPreferences.getInstance();
+class AppInitializer extends StatefulWidget {
+  const AppInitializer({super.key});
 
-  // KV migration from the 'is_first_login' key to 'onboarding_completed'
-  // to correctly handle the completion of the onboarding process
-  // (To consider to remove in later future)
-  final bool? isFirstLoginCachedValue =
-      _sharedPreferences.getBool('is_first_login');
-  final bool isOnBoardingCompletedKeyNotSaved =
-      _sharedPreferences.getBool('onboarding_completed') == null;
-  if (isFirstLoginCachedValue != null && isOnBoardingCompletedKeyNotSaved) {
-    await _sharedPreferences.setBool(
-        'onboarding_completed', !isFirstLoginCachedValue);
+  @override
+  State<AppInitializer> createState() => _AppInitializerState();
+}
+
+class _AppInitializerState extends State<AppInitializer> {
+  bool _isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
   }
 
-  // perform recurring transactions checks
-  DateTime? lastCheckGetPref = _sharedPreferences
-              .getString('last_recurring_transactions_check') !=
-          null
-      ? DateTime.parse(
-          _sharedPreferences.getString('last_recurring_transactions_check')!)
-      : null;
-  DateTime? lastRecurringTransactionsCheck = lastCheckGetPref;
+  Future<void> _initializeApp() async {
+    NotificationService().requestNotificationPermissions();
+    NotificationService().initializeNotifications();
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.local);
 
-  if (lastRecurringTransactionsCheck == null ||
-      DateTime.now().difference(lastRecurringTransactionsCheck).inDays >= 1) {
-    RecurringTransactionMethods().checkRecurringTransactions();
-    // update last recurring transactions runtime
-    await _sharedPreferences.setString(
-      'last_recurring_transactions_check',
-      DateTime.now().toIso8601String(),
-    );
+    _sharedPreferences = await SharedPreferences.getInstance();
+
+    final isFirstLoginCachedValue =
+        _sharedPreferences.getBool('is_first_login');
+    final isOnBoardingCompletedKeyNotSaved =
+        _sharedPreferences.getBool('onboarding_completed') == null;
+
+    if (isFirstLoginCachedValue != null && isOnBoardingCompletedKeyNotSaved) {
+      await _sharedPreferences.setBool(
+        'onboarding_completed',
+        !isFirstLoginCachedValue,
+      );
+    }
+
+    final lastCheck = _sharedPreferences.getString('last_recurring_transactions_check');
+    final lastRecurringTransactionsCheck =
+        lastCheck != null ? DateTime.parse(lastCheck) : null;
+
+    if (lastRecurringTransactionsCheck == null ||
+        DateTime.now().difference(lastRecurringTransactionsCheck).inDays >= 1) {
+      RecurringTransactionMethods().checkRecurringTransactions();
+      await _sharedPreferences.setString(
+        'last_recurring_transactions_check',
+        DateTime.now().toIso8601String(),
+      );
+    }
+
+    await initializeDateFormatting('it_IT', null);
+
+    setState(() {
+      _isInitialized = true;
+    });
   }
 
-  initializeDateFormatting('it_IT', null).then(
-      (_) => runApp(Phoenix(child: const ProviderScope(child: Launcher()))));
+  @override
+  Widget build(BuildContext context) {
+    if (!_isInitialized) {
+      return MaterialApp(
+        home: Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
+    return const Launcher();
+  }
 }
 
 class Launcher extends ConsumerWidget {

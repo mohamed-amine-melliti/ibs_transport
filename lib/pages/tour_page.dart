@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../constants/style.dart';
 import '../ui/device.dart';
 import '../ui/widgets/default_card.dart';
 
