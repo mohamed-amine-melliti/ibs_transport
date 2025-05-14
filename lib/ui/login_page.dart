@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   // Logo et titre
                   Image.asset(
-                    'images/smartup/ibslogo/androidicons/96x96.png',
+                    'assets/smartup/ibslogo/androidicons/192x192.png',
                     width: 80,
                     height: 80,
                   ),
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                   ),
                   const SizedBox(height: Sizes.xl),
-                  
+
                   // Formulaire de connexion
                   Form(
                     key: _formKey,
@@ -64,7 +64,8 @@ class _LoginPageState extends State<LoginPage> {
                             hintText: 'Code de la tournée',
                             prefixIcon: const Icon(Icons.badge),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Sizes.borderRadiusSmall),
+                              borderRadius: BorderRadius.circular(
+                                  Sizes.borderRadiusSmall),
                             ),
                           ),
                           validator: (value) {
@@ -75,18 +76,21 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         const SizedBox(height: Sizes.md),
-                        
+
                         // Champ Mot de passe
                         TextFormField(
                           controller: _passwordController,
                           obscureText: _obscurePassword,
                           decoration: InputDecoration(
                             labelText: 'Mot de passe',
-                            hintText: 'Défini dans le paramétrage de l\'équipe opérationnelle',
+                            hintText:
+                                'Défini dans le paramétrage de l\'équipe opérationnelle',
                             prefixIcon: const Icon(Icons.lock),
                             suffixIcon: IconButton(
                               icon: Icon(
-                                _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                                _obscurePassword
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
                               ),
                               onPressed: () {
                                 setState(() {
@@ -95,7 +99,8 @@ class _LoginPageState extends State<LoginPage> {
                               },
                             ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Sizes.borderRadiusSmall),
+                              borderRadius: BorderRadius.circular(
+                                  Sizes.borderRadiusSmall),
                             ),
                           ),
                           validator: (value) {
@@ -106,22 +111,27 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         const SizedBox(height: Sizes.xl),
-                        
+
                         // Bouton de connexion
                         ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               // Logique de connexion à implémenter
                               // Naviguer vers la page de tournée après connexion
-                              Navigator.of(context).pushReplacementNamed('/tour');
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/tour');
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                            padding: const EdgeInsets.symmetric(vertical: Sizes.md),
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                            padding:
+                                const EdgeInsets.symmetric(vertical: Sizes.md),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(Sizes.borderRadiusSmall),
+                              borderRadius: BorderRadius.circular(
+                                  Sizes.borderRadiusSmall),
                             ),
                           ),
                           child: const Text(
@@ -129,10 +139,10 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                        
+
                         // Espace entre les boutons
                         const SizedBox(height: Sizes.md),
-                        
+
                         // Rangée de boutons supplémentaires
                         Row(
                           children: [
@@ -140,14 +150,19 @@ class _LoginPageState extends State<LoginPage> {
                             Expanded(
                               child: ElevatedButton(
                                 onPressed: () {
-                                  Navigator.of(context).pushNamed('/configuration');
+                                  Navigator.of(context)
+                                      .pushNamed('/configuration');
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                                  foregroundColor: Theme.of(context).colorScheme.onSecondary,
-                                  padding: const EdgeInsets.symmetric(vertical: Sizes.md),
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  foregroundColor:
+                                      Theme.of(context).colorScheme.onSecondary,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: Sizes.md),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(Sizes.borderRadiusSmall),
+                                    borderRadius: BorderRadius.circular(
+                                        Sizes.borderRadiusSmall),
                                   ),
                                 ),
                                 child: const Text(
@@ -156,10 +171,10 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                             ),
-                            
+
                             // Espace entre les boutons
                             const SizedBox(width: Sizes.md),
-                            
+
                             // Bouton Journée
                             Expanded(
                               child: ElevatedButton(
@@ -167,11 +182,15 @@ class _LoginPageState extends State<LoginPage> {
                                   Navigator.of(context).pushNamed('/journee');
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue, // Changed from Theme.of(context).colorScheme.tertiary to Colors.blue
-                                  foregroundColor: Colors.white, // Changed to white for better contrast on blue
-                                  padding: const EdgeInsets.symmetric(vertical: Sizes.md),
+                                  backgroundColor: Colors
+                                      .blue, // Changed from Theme.of(context).colorScheme.tertiary to Colors.blue
+                                  foregroundColor: Colors
+                                      .white, // Changed to white for better contrast on blue
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: Sizes.md),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(Sizes.borderRadiusSmall),
+                                    borderRadius: BorderRadius.circular(
+                                        Sizes.borderRadiusSmall),
                                   ),
                                 ),
                                 child: const Text(
@@ -185,14 +204,14 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                  
+
                   // Copyright section with logo
                   const SizedBox(height: Sizes.xxl),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'assets/smartup/ibslogo/androidicons/48x48.png',
+                        'assets/smartup/SMART UP/Android Icons/192x192.png',
                         width: 30,
                         height: 30,
                       ),
@@ -202,7 +221,10 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity(0.8),
                         ),
                       ),
                     ],
