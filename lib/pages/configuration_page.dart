@@ -44,8 +44,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Configuration'),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        foregroundColor: Theme.of(context).colorScheme.onSecondary,
+        backgroundColor: Colors.white, // Changed from Theme.of(context).colorScheme.secondary to white
+        foregroundColor: Colors.black, // Changed from Theme.of(context).colorScheme.onSecondary to black
       ),
       body: SafeArea(
         child: SingleChildScrollView(

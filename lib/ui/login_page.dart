@@ -10,14 +10,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _tourCodeController = TextEditingController();
-  final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
     _tourCodeController.dispose();
-    _nameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -72,26 +70,6 @@ class _LoginPageState extends State<LoginPage> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Veuillez saisir le code de la tournée';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: Sizes.md),
-                        
-                        // Champ Nom (Nom du convoyeur de la tournée)
-                        TextFormField(
-                          controller: _nameController,
-                          decoration: InputDecoration(
-                            labelText: 'Nom',
-                            hintText: 'Nom du convoyeur de la tournée',
-                            prefixIcon: const Icon(Icons.person),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Sizes.borderRadiusSmall),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez saisir votre nom';
                             }
                             return null;
                           },
