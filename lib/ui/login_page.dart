@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: Sizes.md),
                   Text(
-                    'Ibis Transport',
+                    'Ibs Transport',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                           fontWeight: FontWeight.bold,
@@ -151,8 +151,83 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
+                        
+                        // Espace entre les boutons
+                        const SizedBox(height: Sizes.md),
+                        
+                        // Rangée de boutons supplémentaires
+                        Row(
+                          children: [
+                            // Bouton Configuration
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed('/configuration');
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                                  foregroundColor: Theme.of(context).colorScheme.onSecondary,
+                                  padding: const EdgeInsets.symmetric(vertical: Sizes.md),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(Sizes.borderRadiusSmall),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'CONFIGURER',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            
+                            // Espace entre les boutons
+                            const SizedBox(width: Sizes.md),
+                            
+                            // Bouton Journée
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed('/journee');
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue, // Changed from Theme.of(context).colorScheme.tertiary to Colors.blue
+                                  foregroundColor: Colors.white, // Changed to white for better contrast on blue
+                                  padding: const EdgeInsets.symmetric(vertical: Sizes.md),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(Sizes.borderRadiusSmall),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'JOURNÉE',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
+                  ),
+                  
+                  // Copyright section with logo
+                  const SizedBox(height: Sizes.xxl),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.account_balance_wallet,
+                        size: 30,
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                      ),
+                      const SizedBox(width: Sizes.md),
+                      Text(
+                        '© 2025 Smart UP',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

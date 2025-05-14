@@ -28,6 +28,8 @@ import 'pages/backup_page/backup_page.dart';
 import 'pages/tour_page.dart';
 import 'ui/login_page.dart';
 import 'pages/tour_stepper_page.dart'; // Ajouter cet import
+import 'pages/configuration_page.dart'; // Ajouter cet import
+import 'pages/journee_page.dart'; // Ajouter cet import
 
 // Import the LoginPage
 
@@ -103,6 +105,10 @@ Route<dynamic> makeRoute(RouteSettings settings) {
           clientName: args['clientName'] as String,
         ),
       );
+    case '/configuration':
+      return buildAdaptiveRoute(settings.name, const ConfigurationPage());
+    case '/journee':
+      return buildAdaptiveRoute(settings.name, const JourneePage());
     default:
       throw 'Route is not defined';
   }

@@ -96,10 +96,10 @@ flutter:
 flutter_native_splash:
   web: false
   color: "#ffffff"
-  image: assets/ulmus.png
+  image: "assets/smartup/ibslogo/androidicons/192x192.png"
   android_12:
     color: "#ffffff"
-    image: assets/ulmus.png
+    image: "assets/smartup/ibslogo/androidicons/192x192.png"
 
 flutter_icons:
   android: true
@@ -107,7 +107,7 @@ flutter_icons:
   web:
     generate: false
   remove_alpha_ios: true
-  image_path: "assets/ulmus.png"
-  image_path_ios: "assets/ulmus.png"
+  image_path: "assets/smartup/ibsicon/androidicons/96x96.png"
+  image_path_ios: "assets/smartup/ibsicon/androidicons/96x96.png"
   adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: "assets/ulmus.png"
+  adaptive_icon_foreground: "assets/smartup/ibsicon/androidicons/96x96.png"
