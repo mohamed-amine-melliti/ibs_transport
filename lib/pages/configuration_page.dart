@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ConfigurationPage extends StatefulWidget {
   const ConfigurationPage({super.key});
@@ -11,15 +12,41 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   final _formKey = GlobalKey<FormState>();
   final _centreFortController = TextEditingController();
   final _equipementController = TextEditingController();
+  final _loginController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _dateController = TextEditingController();
   bool _obscurePassword = true;
+  DateTime _selectedDate = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    _dateController.text = DateFormat('dd/MM/yyyy').format(_selectedDate);
+  }
 
   @override
   void dispose() {
     _centreFortController.dispose();
     _equipementController.dispose();
+    _loginController.dispose();
     _passwordController.dispose();
+    _dateController.dispose();
     super.dispose();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+        _dateController.text = DateFormat('dd/MM/yyyy').format(_selectedDate);
+      });
+    }
   }
 
   void _validateAndSave() {
@@ -44,8 +71,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Configuration'),
-        backgroundColor: Colors.white, // Changed from Theme.of(context).colorScheme.secondary to white
-        foregroundColor: Colors.black, // Changed from Theme.of(context).colorScheme.onSecondary to black
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -81,6 +108,43 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Veuillez saisir l\'ID de l\'équipement';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16.0),
+                
+                // Date journée
+                TextFormField(
+                  controller: _dateController,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'Date journée',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.calendar_today),
+                      onPressed: () => _selectDate(context),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez sélectionner une date';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16.0),
+                
+                // Login
+                TextFormField(
+                  controller: _loginController,
+                  decoration: const InputDecoration(
+                    labelText: 'Login',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez saisir votre login';
                     }
                     return null;
                   },
