@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: Sizes.md),
                   Text(
-                    'Ibs Transport',
+                    'IBS Transport',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                           fontWeight: FontWeight.bold,

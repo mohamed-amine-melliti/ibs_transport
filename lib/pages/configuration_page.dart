@@ -55,7 +55,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
       if (_passwordController.text == 'IBS*2025*') {
         // Logique pour insérer/modifier une ligne dans RF_PDA_CONFIGS
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Configuration enregistrée avec succès')),
+          const SnackBar(
+              content: Text('Configuration enregistrée avec succès')),
         );
         Navigator.pop(context);
       } else {
@@ -97,7 +98,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                   },
                 ),
                 const SizedBox(height: 16.0),
-                
+
                 // Equipement ID
                 TextFormField(
                   controller: _equipementController,
@@ -113,7 +114,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                   },
                 ),
                 const SizedBox(height: 16.0),
-                
+
                 // Date journée
                 TextFormField(
                   controller: _dateController,
@@ -134,7 +135,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                   },
                 ),
                 const SizedBox(height: 16.0),
-                
+
                 // Login
                 TextFormField(
                   controller: _loginController,
@@ -150,7 +151,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                   },
                 ),
                 const SizedBox(height: 16.0),
-                
+
                 // Mot de passe
                 TextFormField(
                   controller: _passwordController,
@@ -160,7 +161,9 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
@@ -177,7 +180,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                   },
                 ),
                 const SizedBox(height: 24.0),
-                
+
                 // Bouton Valider
                 ElevatedButton(
                   onPressed: _validateAndSave,
