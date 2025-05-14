@@ -34,10 +34,10 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Logo et titre
-                  Icon(
-                    Icons.account_balance_wallet,
-                    size: 80,
-                    color: Theme.of(context).colorScheme.primary,
+                  Image.asset(
+                    'images/smartup/ibslogo/androidicons/96x96.png',
+                    width: 80,
+                    height: 80,
                   ),
                   const SizedBox(height: Sizes.md),
                   Text(
@@ -191,10 +191,10 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.account_balance_wallet,
-                        size: 30,
-                        color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                      Image.asset(
+                        'assets/smartup/ibslogo/androidicons/48x48.png',
+                        width: 30,
+                        height: 30,
                       ),
                       const SizedBox(width: Sizes.md),
                       Text(

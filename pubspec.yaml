@@ -49,6 +49,11 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/smartup/
+    - assets/smartup/ibslogo/
+    - assets/smartup/ibslogo/androidicons/
+    - assets/smartup/ibsicon/androidicons/
+    - assets/smartup/SMART UP/Android Icons/
   fonts:
     - family: NunitoSans
       fonts:
