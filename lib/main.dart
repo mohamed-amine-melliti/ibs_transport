@@ -97,7 +97,7 @@ class Launcher extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appThemeState = ref.watch(appThemeStateNotifier);
     return MaterialApp(
-      title: 'Ibis Transport',
+      title: 'Ibs Transport',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode:

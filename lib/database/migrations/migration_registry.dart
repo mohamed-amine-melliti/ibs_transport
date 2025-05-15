@@ -17,6 +17,12 @@ import '0002_account_net_worth.dart';
 import '0007_rf_passage_status.dart';
 import '0008_rf_Tourne_status.dart';
 import '0009_rf_objects.dart'; // Add this import
+import '0010_tp_tournes.dart'; // Add this import
+import '0011_tp_passages.dart'; // Add this import
+import '0012_rm_remise_billets.dart'; // Add this import
+import '0013_rm_remise_objects.dart'; // Add this import
+import '0014_rm_remise_monnaies.dart'; // Add this import
+import '0015_rp_reprise_objects.dart'; // Add this import
 
 import '../migration_base.dart';
 
@@ -27,7 +33,13 @@ List<Migration> getMigrations() {
     // Other existing migrations
     RfPassageStatusMigration(),
     RfTourneStatusMigration(),
-    RfObjectsMigration() // Add this line
+    RfObjectsMigration(), // Add this line
+    TpTournesMigration(), // Add this line
+    TpPassagesMigration(), // Add this line
+    RmRemiseBilletsMigration(), // Add this line
+    RmRemiseObjectsMigration(), // Add this line
+    RmRemiseMonnaiesMigration(), // Add this line
+    RpRepriseObjectsMigration(), // Add this line
   ];
 }
 
