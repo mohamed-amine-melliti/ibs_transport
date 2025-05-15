@@ -139,8 +139,8 @@ class _JourneePageState extends State<JourneePage> {
                 ElevatedButton(
                   onPressed: _validateAndSave,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.tertiary,
-                    foregroundColor: Theme.of(context).colorScheme.onTertiary,
+                    backgroundColor: Colors.blue, // Changed to blue
+                    foregroundColor: Colors.white, // Changed to white for better contrast
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                   ),
                   child: const Text(
