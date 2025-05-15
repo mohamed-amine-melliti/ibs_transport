@@ -35,6 +35,9 @@ dependencies:
   url_launcher: ^6.3.1
   moon_design: ^1.1.0
 
+  shelf: ^1.4.0
+  shelf_router: ^1.1.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -101,10 +104,10 @@ flutter:
 flutter_native_splash:
   web: false
   color: "#ffffff"
-  image: "assets/smartup/ibslogo/androidicons/192x192.png"
+  image: "assets/smartup/ibslogo/androidicons/96x96.png"
   android_12:
     color: "#ffffff"
-    image: "assets/smartup/ibslogo/androidicons/192x192.png"
+    image: "assets/smartup/ibslogo/androidicons/96x96.png"
 
 flutter_icons:
   android: true

@@ -19,7 +19,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: ElevatedButton.icon(
           onPressed: () {
             // 👇 Navigate back to the first page (e.g. "/")
-            Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+         //   Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
           },
           icon: const Icon(Icons.home),
           label: const Text('Aller à la première page'),

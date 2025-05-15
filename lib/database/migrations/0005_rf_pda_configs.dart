@@ -23,5 +23,13 @@ class RfPdaConfigsMigration extends Migration {
         `${RfPdaConfigFields.centreFortId}` VARCHAR(20) NOT NULL
       )
     ''');
+
+
+       // Insertion des données initiales
+
+
+     // Insertion des données initiales
+
+     
   }
 }

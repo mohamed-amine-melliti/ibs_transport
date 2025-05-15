@@ -13,6 +13,8 @@ library;
 
 import '0001_initial_schema.dart';
 import '0002_account_net_worth.dart';
+// Add your new migration import
+import '0005_rf_pda_configs.dart';
 import '../migration_base.dart';
 
 /// Returns all available migrations in execution order.
@@ -25,6 +27,8 @@ List<Migration> getMigrations() {
   return [
     InitialSchema(),
     AccountNetWorth(),
+    // Add your migration here
+    RfPdaConfigsMigration(),
     // Add future migrations here
   ];
 }
