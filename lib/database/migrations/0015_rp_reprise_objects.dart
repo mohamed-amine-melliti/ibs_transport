@@ -2,15 +2,17 @@ import '../migration_base.dart';
 import 'package:sqflite/sqflite.dart';
 
 class RpRepriseObjectsMigration extends Migration {
-  RpRepriseObjectsMigration() : super(version: 15, description: 'Create RP_REPRISE_OBJECTS table');
+  RpRepriseObjectsMigration()
+      : super(version: 15, description: 'Create RP_REPRISE_OBJECTS table');
   @override
-  int get version => 15; // Adjust this number based on your current migration version
+  int get version =>
+      15; // Adjust this number based on your current migration version
 
   @override
   Future<void> up(Database db) async {
     // Enable foreign keys
     await db.execute('PRAGMA foreign_keys = ON');
-    
+
     // Create the table
     await db.execute('''
       CREATE TABLE RP_REPRISE_OBJECTS (
