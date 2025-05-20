@@ -1,7 +1,8 @@
 import 'package:sqflite/sqflite.dart';
 import '../database/sossoldi_database.dart';
 import 'tp_tourne.dart';
-
+import 'dart:convert';
+import 'package:intl/intl.dart';
 class TpTourneRepository {
   Future<Database> get database async {
     return await SossoldiDatabase.instance.database;
@@ -12,7 +13,7 @@ class TpTourneRepository {
     final maps = await db.query(
       tpTournesTable,
       columns: TpTourneFields.allFields,
-      where: '${TpTourneFields.id} = ?',
+      where: '${TpTourneFields.tourneId} = ?',
       whereArgs: [id],
     );
 
@@ -53,8 +54,8 @@ class TpTourneRepository {
     return await db.update(
       tpTournesTable,
       tourne.toJson(),
-      where: '${TpTourneFields.id} = ?',
-      whereArgs: [tourne.id],
+      where: '${TpTourneFields.tourneId} = ?',
+      whereArgs: [tourne.tourneId],
     );
   }
 
@@ -62,7 +63,7 @@ class TpTourneRepository {
     final db = await database;
     return await db.delete(
       tpTournesTable,
-      where: '${TpTourneFields.id} = ?',
+      where: '${TpTourneFields.tourneId} = ?',
       whereArgs: [id],
     );
   }

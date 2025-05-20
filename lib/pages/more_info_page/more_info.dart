@@ -41,6 +41,16 @@ class _MoreInfoPageState extends ConsumerState<MoreInfoPage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text('App Info'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              // TODO: Implement sign out functionality
+              Navigator.of(context).pop();
+            },
+            tooltip: 'Sign Out',
+          ),
+        ],
       ),
       body: ListView.separated(
         padding: const EdgeInsets.symmetric(vertical: Sizes.lg),

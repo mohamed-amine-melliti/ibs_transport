@@ -25,17 +25,31 @@ class _PlanningPageState extends State<PlanningPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      key: _key,
-      child: ListView(
-        padding: const EdgeInsetsDirectional.all(Sizes.md),
-        children: [
-          Row(
-            children: [
-              Text(
-                "Monthly budget",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Planning"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              // TODO: Implement sign out functionality
+              Navigator.of(context).pop();
+            },
+            tooltip: 'Sign Out',
+          ),
+        ],
+      ),
+      body: Container(
+        key: _key,
+        child: ListView(
+          padding: const EdgeInsetsDirectional.all(Sizes.md),
+          children: [
+            Row(
+              children: [
+                Text(
+                  "Monthly budget",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               const Spacer(),
               GestureDetector(
                 onTap: () {
@@ -78,6 +92,6 @@ class _PlanningPageState extends State<PlanningPage> {
           RecurringPaymentSection(),
         ],
       ),
-    );
+    ));
   }
 }

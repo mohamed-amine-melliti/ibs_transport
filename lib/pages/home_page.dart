@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../main.dart'; // Import for signOut function
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -14,6 +15,13 @@ class _HomePageState extends ConsumerState<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Page Vide'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => signOut(context),
+            tooltip: 'Sign Out',
+          ),
+        ],
       ),
       body: Center(
         child: ElevatedButton.icon(

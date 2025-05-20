@@ -14,6 +14,19 @@ import 'utils/notifications_service.dart';
 
 late SharedPreferences _sharedPreferences;
 
+
+// Create a global key for navigator to use across the app
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+// Function to sign out and return to login page
+void signOut(BuildContext context) {
+  // You can add any cleanup logic here if needed
+  // For example, clearing user data from shared preferences
+  
+  // Navigate to login page and remove all previous routes
+  Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+}
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(Phoenix(child: const ProviderScope(child: AppInitializer())));
@@ -97,6 +110,7 @@ class Launcher extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appThemeState = ref.watch(appThemeStateNotifier);
     return MaterialApp(
+      navigatorKey: navigatorKey, // Add navigator key
       title: 'Ibs Transport',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
