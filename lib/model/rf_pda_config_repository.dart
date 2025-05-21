@@ -26,17 +26,25 @@ class RfPdaConfigRepository {
   Future<List<RfPdaConfig>> getAll() async {
     final db = await database;
     final result = await db.query(rfPdaConfigTable);
+    print('Insert successful. Row ID: $result');
     return result.map((json) => RfPdaConfig.fromJson(json)).toList();
   }
 
   Future<int> insert(RfPdaConfig config) async {
     final db = await database;
-    return await db.insert(rfPdaConfigTable, config.toJson());
+
+        print('Insert successful. Row ID: $db');
+
+    return await db.insert(
+      rfPdaConfigTable,
+      config.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   Future<int> update(RfPdaConfig config) async {
     final db = await database;
-    return db.update(
+    return await db.update(
       rfPdaConfigTable,
       config.toJson(),
       where: '${RfPdaConfigFields.id} = ?',
@@ -51,5 +59,16 @@ class RfPdaConfigRepository {
       where: '${RfPdaConfigFields.id} = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<void> createTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $rfPdaConfigTable (
+        ${RfPdaConfigFields.id} INTEGER PRIMARY KEY,
+        ${RfPdaConfigFields.pdaId} TEXT NOT NULL,
+        ${RfPdaConfigFields.centreFortId} TEXT NOT NULL,
+        ${RfPdaConfigFields.url} TEXT
+      )
+    ''');
   }
 }

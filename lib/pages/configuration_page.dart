@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../model/rf_pda_config.dart';
 import '../model/rf_pda_config_repository.dart';
 
@@ -14,6 +13,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   final _formKey = GlobalKey<FormState>();
   final _centreFortController = TextEditingController();
   final _equipementController = TextEditingController();
+  final _locationController = TextEditingController(); // NEW
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   final _repository = RfPdaConfigRepository();
@@ -27,20 +27,17 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
 
   Future<void> _loadLastConfig() async {
     try {
-      // Récupérer toutes les configurations
       final configs = await _repository.getAll();
-      
       if (configs.isNotEmpty) {
-        // Prendre la dernière configuration (supposée être la plus récente)
         final lastConfig = configs.last;
         setState(() {
           _centreFortController.text = lastConfig.centreFortId;
           _equipementController.text = lastConfig.pdaId;
-          _configId = lastConfig.id; // Stocker l'ID pour la mise à jour
+          _locationController.text = lastConfig.url ?? ''; // NEW
+          _configId = lastConfig.id;
         });
       }
     } catch (e) {
-      // Gérer l'erreur si nécessaire
       print('Erreur lors du chargement de la configuration: $e');
     }
   }
@@ -49,42 +46,39 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   void dispose() {
     _centreFortController.dispose();
     _equipementController.dispose();
+    _locationController.dispose(); // NEW
     _passwordController.dispose();
     super.dispose();
   }
 
   Future<void> _validateAndSave() async {
     if (_formKey.currentState!.validate()) {
-      // Vérification du mot de passe statique
       if (_passwordController.text == 'IBS*2025*') {
         try {
-          // Récupérer toutes les configurations
           final configs = await _repository.getAll();
-          
-          // Créer l'objet de configuration avec les valeurs du formulaire
+
           RfPdaConfig config;
-          
+
           if (configs.isEmpty) {
-            // Si aucune configuration n'existe, créer une nouvelle avec ID=1
             config = RfPdaConfig(
               id: 1,
               centreFortId: _centreFortController.text,
               pdaId: _equipementController.text,
+              url: _locationController.text, // NEW
             );
             await _repository.insert(config);
           } else {
-            // Sinon, mettre à jour la première configuration existante
             config = RfPdaConfig(
-              id: configs.first.id, // Utiliser l'ID de la première configuration
+              id: configs.first.id,
               centreFortId: _centreFortController.text,
               pdaId: _equipementController.text,
+              url: _locationController.text, // NEW
             );
             await _repository.update(config);
           }
-          
+
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Configuration enregistrée avec succès')),
+            const SnackBar(content: Text('Configuration enregistrée avec succès')),
           );
           Navigator.pop(context);
         } catch (e) {
@@ -148,6 +142,22 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 ),
                 const SizedBox(height: 16.0),
 
+                // NEW: Location
+                TextFormField(
+                  controller: _locationController,
+                  decoration: const InputDecoration(
+                    labelText: 'URL',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez saisir un URL';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16.0),
+
                 // Mot de passe
                 TextFormField(
                   controller: _passwordController,
@@ -157,9 +167,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword
-                            ? Icons.visibility
-                            : Icons.visibility_off,
+                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {

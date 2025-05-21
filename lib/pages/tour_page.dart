@@ -7,9 +7,11 @@ import '../model/rf_pda_config_repository.dart';
 import '../model/tp_tourne.dart';
 import '../model/tp_passage.dart';
 import '../model/tp_tourne_repository.dart';
+import '../services/tour_api_service.dart'; // Import the new service
+import 'tour_details_page.dart';
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'tour_details_page.dart';
 // Définition des statuts possibles pour une tournée
 enum TourStatus { sortie, enCours, terminee }
 
@@ -53,12 +55,14 @@ class TourPage extends ConsumerStatefulWidget {
 
 class _TourPageState extends ConsumerState<TourPage> {
   bool _isSyncing = false;
+  final TourApiService _tourApiService = TourApiService(); // Create instance of the service
 
   TpTourne tour = TpTourne();
-  Map<String, dynamic>? _jsonData; // <-- Add this line
+  Map<String, dynamic>? _jsonData;
   final _centreFortController = TextEditingController();
   final _equipementController = TextEditingController();
   final _repository = RfPdaConfigRepository();
+  
   @override
   void initState() {
     super.initState();
@@ -68,41 +72,29 @@ class _TourPageState extends ConsumerState<TourPage> {
 
   Future<void> _fetchOpeningData() async {
     try {
-      String username = 'admin';
-      String password = 'smartup2025';
-      String basicAuth ='Basic ' + base64Encode(utf8.encode('$username:$password'));
-
-      final response = await http.post(
-        Uri.parse('http://172.20.20.119:8082/ibs-api/tourne/ouvertureTourne'),
-        headers: {'Authorization': basicAuth,'Content-Type': 'application/json'},
-        body: jsonEncode({
-          "centreFortId": "1",
-          "dateJourne": "2025-01-22",
-          "equipementId": "PDA200",
-          "login": "admin",
-          "password": ""
-        }),
+      final result = await _tourApiService.fetchTourOpeningData(
+        centreFortId: "1",
+        dateJourne: "2025-01-22",
+        equipementId: "PDA200",
+        login: "admin"
       );
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-
-        if (jsonData['success']) {
-          tour = TpTourne.fromJson(jsonData['data']);
-          _jsonData = jsonData['data']; // <-- Store the decoded data
-        } else {
-          setState(() {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('fdfd')),
-            );
-          });
-        }
+      
+      if (result['success']) {
+        setState(() {
+          tour = result['tour'];
+          _jsonData = result['rawData'];
+        });
       } else {
-        tour.chauffeur = response.statusCode.toString();
+        setState(() {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(result['errorMessage'] ?? 'Unknown error')),
+          );
+        });
       }
     } catch (e) {
-      tour.chauffeur = 'ddd';
-    } finally {
-      setState(() {});
+      setState(() {
+        tour.chauffeur = 'Error: $e';
+      });
     }
   }
 
@@ -132,19 +124,28 @@ class _TourPageState extends ConsumerState<TourPage> {
       _isSyncing = true;
     });
 
-    // Simuler une opération de synchronisation
-    await Future.delayed(const Duration(seconds: 2));
-
-    // Mettre à jour le statut après synchronisation
-    if (mounted) {
-      setState(() {
-        _isSyncing = false;
-      });
-
-      // Afficher un message de confirmation
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Tournée synchronisée avec succès')),
-      );
+    try {
+      final result = await _tourApiService.syncTour(tour);
+      
+      if (mounted) {
+        setState(() {
+          _isSyncing = false;
+        });
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(result['message'] ?? 'Tour synchronized')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isSyncing = false;
+        });
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sync error: $e')),
+        );
+      }
     }
   }
 
