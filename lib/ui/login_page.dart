@@ -36,8 +36,8 @@ class _LoginPageState extends State<LoginPage> {
                   // Logo et titre
                   Image.asset(
                     'assets/smartup/ibslogo/androidicons/192x192.png',
-                    width: 80,
-                    height: 80,
+                    width: 120,
+                    height: 120,
                   ),
                   const SizedBox(height: Sizes.md),
                   Text(
@@ -180,9 +180,9 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'assets/smartup/SMART UP/Android Icons/192x192.png',
-                        width: 30,
-                        height: 30,
+                        'assets/smartup/SMART UP/Android Icons/bigsmartup.png',
+                        width: 92,
+                        height: 92,
                       ),
                       const SizedBox(width: Sizes.md),
                       Text(

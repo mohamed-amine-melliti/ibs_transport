@@ -104,10 +104,11 @@ flutter:
 flutter_native_splash:
   web: false
   color: "#ffffff"
-  image: "assets/smartup/ibslogo/androidicons/96x96.png"
+  image: "assets/images/1.png"
+  android_gravity : center
   android_12:
     color: "#ffffff"
-    image: "assets/smartup/ibslogo/androidicons/96x96.png"
+    image: "assets/images/1.png"
 
 flutter_icons:
   android: true
