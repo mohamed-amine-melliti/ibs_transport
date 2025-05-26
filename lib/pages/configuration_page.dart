@@ -101,6 +101,15 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
         title: const Text('Configuration'),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sign Out',
+            onPressed: () {
+              Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

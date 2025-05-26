@@ -148,35 +148,6 @@ class _LoginPageState extends State<LoginPage> {
                         // Rangée de boutons supplémentaires
                         Row(
                           children: [
-                            // Bouton Configuration
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pushNamed('/configuration');
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.secondary,
-                                  foregroundColor:
-                                      Theme.of(context).colorScheme.onSecondary,
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: Sizes.md),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        Sizes.borderRadiusSmall),
-                                  ),
-                                ),
-                                child: const Text(
-                                  'CONFIGURER',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-
-                            // Espace entre les boutons
-                            const SizedBox(width: Sizes.md),
-
                             // Bouton Journée
                             Expanded(
                               child: ElevatedButton(
@@ -184,15 +155,11 @@ class _LoginPageState extends State<LoginPage> {
                                   Navigator.of(context).pushNamed('/journee');
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors
-                                      .blue, // Changed from Theme.of(context).colorScheme.tertiary to Colors.blue
-                                  foregroundColor: Colors
-                                      .white, // Changed to white for better contrast on blue
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: Sizes.md),
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(vertical: Sizes.md),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        Sizes.borderRadiusSmall),
+                                    borderRadius: BorderRadius.circular(Sizes.borderRadiusSmall),
                                   ),
                                 ),
                                 child: const Text(
