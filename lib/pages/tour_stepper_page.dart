@@ -16,6 +16,21 @@ class TourStepperPage extends ConsumerWidget {
     final currentStep = ref.watch(currentStepProvider);
     
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tour Stepper'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sign Out',
+            onPressed: () {
+              // If you have a signOut(context) function, use it here:
+              // signOut(context);
+              // Or use direct navigation:
+              Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+            },
+          ),
+        ],
+      ),
       body: Column(
         children: [
           // Stepper horizontal en haut

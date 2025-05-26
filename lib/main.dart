@@ -20,10 +20,6 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // Function to sign out and return to login page
 void signOut(BuildContext context) {
-  // You can add any cleanup logic here if needed
-  // For example, clearing user data from shared preferences
-  
-  // Navigate to login page and remove all previous routes
   Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
 }
 

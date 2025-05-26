@@ -116,10 +116,12 @@ class _LoginPageState extends State<LoginPage> {
                         ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              // Logique de connexion à implémenter
-                              // Naviguer vers la page de tournée après connexion
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/tour');
+                              if (_passwordController.text == 'IBIS*2025*') {
+                                Navigator.of(context).pushReplacementNamed('/configuration');
+                              } else {
+                                // Existing logic: navigate to tour page or show error
+                                Navigator.of(context).pushReplacementNamed('/tour');
+                              }
                             }
                           },
                           style: ElevatedButton.styleFrom(
