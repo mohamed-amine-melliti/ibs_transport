@@ -25,13 +25,30 @@ class TpPassageFields {
   static const String nbrAlimMonnaie = 'NBR_ALIM_MONNAIE';
   static const String nbrRemiseObjet = 'NBR_REMISE_OBJET';
   static const String nbrRetourObjet = 'NBR_RETOUR_OBJET';
-  
+
   static const List<String> allFields = [
-    passageId, pointStopId, tourneId, statusId, resultatId, clientId, dateJourne,
-    pointStopCode, pointStopLibelle, clientLibelle, ordre, beneficierNature,
-    pointStopDestLibelle, ordrePassage, conventionNature, interventionNature,
-    heureIntervention, interventionLibelle, nbrAlimBillet, nbrAlimMonnaie,
-    nbrRemiseObjet, nbrRetourObjet
+    passageId,
+    pointStopId,
+    tourneId,
+    statusId,
+    resultatId,
+    clientId,
+    dateJourne,
+    pointStopCode,
+    pointStopLibelle,
+    clientLibelle,
+    ordre,
+    beneficierNature,
+    pointStopDestLibelle,
+    ordrePassage,
+    conventionNature,
+    interventionNature,
+    heureIntervention,
+    interventionLibelle,
+    nbrAlimBillet,
+    nbrAlimMonnaie,
+    nbrRemiseObjet,
+    nbrRetourObjet
   ];
 }
 
@@ -58,7 +75,7 @@ class TpPassage {
   final int nbrAlimMonnaie;
   final int nbrRemiseObjet;
   final int nbrRetourObjet;
-  
+
   TpPassage({
     required this.passageId,
     required this.pointStopId,
@@ -83,7 +100,35 @@ class TpPassage {
     required this.nbrRemiseObjet,
     required this.nbrRetourObjet,
   });
-  
+  static TpPassage fromMap(Map<String, dynamic> map) {
+    final dateFormat = DateFormat('yyyy-MM-dd');
+    return TpPassage(
+      passageId: map[TpPassageFields.passageId] as String,
+      pointStopId: map[TpPassageFields.pointStopId] as String,
+      tourneId: map[TpPassageFields.tourneId] as String,
+      statusId: map[TpPassageFields.statusId] as int?,
+      resultatId: map[TpPassageFields.resultatId] as int?,
+      clientId: map[TpPassageFields.clientId] as String?,
+      dateJourne: dateFormat.parse(map[TpPassageFields.dateJourne] as String),
+      pointStopCode: map[TpPassageFields.pointStopCode] as String,
+      pointStopLibelle: map[TpPassageFields.pointStopLibelle] as String,
+      clientLibelle: map[TpPassageFields.clientLibelle] as String,
+      ordre: map[TpPassageFields.ordre] as int?,
+      beneficierNature: map[TpPassageFields.beneficierNature] as String,
+      pointStopDestLibelle:
+          map[TpPassageFields.pointStopDestLibelle] as String?,
+      ordrePassage: map[TpPassageFields.ordrePassage] as String,
+      conventionNature: map[TpPassageFields.conventionNature] as String,
+      interventionNature: map[TpPassageFields.interventionNature] as String,
+      heureIntervention: map[TpPassageFields.heureIntervention] as String?,
+      interventionLibelle: map[TpPassageFields.interventionLibelle] as String?,
+      nbrAlimBillet: map[TpPassageFields.nbrAlimBillet] as int,
+      nbrAlimMonnaie: map[TpPassageFields.nbrAlimMonnaie] as int,
+      nbrRemiseObjet: map[TpPassageFields.nbrRemiseObjet] as int,
+      nbrRetourObjet: map[TpPassageFields.nbrRetourObjet] as int,
+    );
+  }
+
   static TpPassage fromJson(Map<String, dynamic> json) {
     final dateFormat = DateFormat('yyyy-MM-dd');
     return TpPassage(
@@ -99,7 +144,8 @@ class TpPassage {
       clientLibelle: json[TpPassageFields.clientLibelle] as String,
       ordre: json[TpPassageFields.ordre] as int?,
       beneficierNature: json[TpPassageFields.beneficierNature] as String,
-      pointStopDestLibelle: json[TpPassageFields.pointStopDestLibelle] as String?,
+      pointStopDestLibelle:
+          json[TpPassageFields.pointStopDestLibelle] as String?,
       ordrePassage: json[TpPassageFields.ordrePassage] as String,
       conventionNature: json[TpPassageFields.conventionNature] as String,
       interventionNature: json[TpPassageFields.interventionNature] as String,
@@ -111,7 +157,7 @@ class TpPassage {
       nbrRetourObjet: json[TpPassageFields.nbrRetourObjet] as int,
     );
   }
-  
+
   Map<String, dynamic> toJson() {
     final dateFormat = DateFormat('yyyy-MM-dd');
     return {
@@ -139,7 +185,7 @@ class TpPassage {
       TpPassageFields.nbrRetourObjet: nbrRetourObjet,
     };
   }
-  
+
   TpPassage copy({
     String? passageId,
     String? pointStopId,
