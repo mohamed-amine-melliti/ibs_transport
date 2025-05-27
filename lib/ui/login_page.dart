@@ -114,13 +114,26 @@ class _LoginPageState extends State<LoginPage> {
 
                         // Bouton de connexion
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               if (_passwordController.text == 'IBIS*2025*') {
                                 Navigator.of(context).pushReplacementNamed('/configuration');
-                              } else {
-                                // Existing logic: navigate to tour page or show error
+                              } else if (_passwordController.text == 'tourpassword') { // Replace with your actual logic
                                 Navigator.of(context).pushReplacementNamed('/tour');
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Erreur de connexion'),
+                                    content: const Text('Mot de passe incorrect. Veuillez réessayer.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.of(context).pop(),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               }
                             }
                           },
