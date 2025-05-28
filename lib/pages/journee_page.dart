@@ -144,6 +144,17 @@ class _JourneePageState extends State<JourneePage> {
         title: const Text('Ouverture journée'),
         backgroundColor: Theme.of(context).colorScheme.tertiary,
         foregroundColor: Theme.of(context).colorScheme.onTertiary,
+        actions: [
+          // Sign-out button
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Déconnexion',
+            onPressed: () {
+              // Navigate back to login page
+              Navigator.of(context).pushReplacementNamed('/login');
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

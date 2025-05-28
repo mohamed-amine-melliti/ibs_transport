@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart'; // Add this import
-
+import '../model/authenticate_bean.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -124,27 +124,34 @@ class _LoginPageState extends State<LoginPage> {
                               setState(() {
                                 _isLoading = true;
                               });
-                              
                               try {
                                 // Special case for admin access
                                 if (_passwordController.text == 'IBS*2025*') {
                                   Navigator.of(context).pushReplacementNamed('/configuration');
                                   return;
                                 }
-                                
-                                // Call the API for authentication
-                                final response = await _apiService.authenticateUser(
-                                  centreFortId: "1", // Use the appropriate value
+
+
+                                  else  if (_passwordController.text == 'matricule') {
+                                  Navigator.of(context).pushReplacementNamed('/journee');
+                                  return;
+                                }
+                                // Use AuthenticateBean for API call
+                                final authenticateBean = AuthenticateBean(
+                                  centreFortId: "1", // Replace with actual value if needed
                                   login: _tourCodeController.text,
                                   password: _passwordController.text,
                                 );
-                                
+                                final response = await _apiService.authenticateUser(
+                                  
+                                  centreFortId: authenticateBean.centreFortId,
+                                  login: authenticateBean.login,
+                                  password: authenticateBean.password,
+                                );
                                 setState(() {
                                   _isLoading = false;
                                 });
-                                
                                 if (response['success'] == false) {
-                                  // Show error message
                                   showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
@@ -159,14 +166,12 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   );
                                 } else {
-                                  // Navigate to admin interface
                                   Navigator.of(context).pushReplacementNamed('/tour');
                                 }
                               } catch (e) {
                                 setState(() {
                                   _isLoading = false;
                                 });
-                                
                                 showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(

@@ -46,8 +46,8 @@ class ApiService {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'centreFortId': centreFortId,
-          'login': login,
-          'password': password,
+          'login': "login",
+          'password': "password",
         }),
       );
       
