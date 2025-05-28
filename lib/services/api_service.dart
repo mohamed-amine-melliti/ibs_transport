@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://172.20.20.119:8082/ibs-api/v2';
+  static const String baseUrl = 'http://172.20.20.83:8082/ibs-api/swagger-ui.html#';
   static const String apiDocs = '$baseUrl/api-docs';
   
   String? _authToken;
@@ -15,10 +15,12 @@ class ApiService {
         Uri.parse('$baseUrl/auth/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'username': username,
-          'password': password,
+          'centreFortId': '1',
+
+          'username': 'admin',
+          'password': '',
         }),
-      );
+      );   
       
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -29,6 +31,32 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Login error: $e');
+    }
+  }
+  
+  // User Authentication
+  Future<Map<String, dynamic>> authenticateUser({
+    required String centreFortId,
+    required String login,
+    required String password,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/user/authenticate'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'centreFortId': centreFortId,
+          'login': login,
+          'password': password,
+        }),
+      );
+      
+      return jsonDecode(response.body);
+    } catch (e) {
+      return {
+        'success': false,
+        'message': 'Erreur de connexion: $e',
+      };
     }
   }
   
@@ -124,5 +152,26 @@ class ApiService {
       print('Error loading saved config: $e');
       return null;
     }
+  }
+  
+  Future<Map<String, dynamic>> fetchOpeningDataFromApi({
+    required String centreFortId,
+    required String dateJourne,
+    required String equipementId,
+    required String login,
+    required String password,
+  }) async {
+    final response = await http.post(
+      Uri.parse('http://172.20.20.83:8082/ibs-api/swagger-ui.html#/ouvertureJournee'),
+      headers: {'accept': '*/*', 'Content-Type': 'application/json'},
+      body: jsonEncode({
+        "centreFortId": centreFortId,
+        "dateJourne": dateJourne,
+        "equipementId": equipementId,
+        "login": login,
+        "password": password
+      }),
+    );
+    return jsonDecode(response.body);
   }
 }

@@ -1,5 +1,5 @@
 class ApiConfig {
-  static const String baseUrl = 'http://172.20.20.119:8082/';
+  static const String baseUrl = 'http://172.20.20.83:8082/ibs-api/swagger-ui.html#/';
   static const String apiDocs = '$baseUrl/api-docs';
   
   // API endpoints

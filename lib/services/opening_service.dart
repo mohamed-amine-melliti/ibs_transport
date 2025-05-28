@@ -4,48 +4,33 @@ import 'package:intl/intl.dart';
 import '../model/tp_passage.dart';
 import '../model/tp_tourne.dart';
 import '../model/tp_tourne_repository.dart';
+import 'api_service.dart';
 
 class OpeningService {
+  final ApiService _apiService = ApiService();
   // Method to fetch opening data from API
   Future<Map<String, dynamic>> fetchOpeningData() async {
     try {
-      final response = await http.post(
-        Uri.parse(
-            'http://172.20.20.119:8082/ibs-api/ibs-api/tourne/ouvertureJournee'),
-        headers: {'accept': '*/*', 'Content-Type': 'application/json'},
-        body: jsonEncode({
-          "centreFortId": "1",
-          "dateJourne": "2025-01-22",
-          "equipementId": "PDA200",
-          "login": "admin",
-          "password": ""
-        }),
+      final data = await _apiService.fetchOpeningDataFromApi(
+        centreFortId: "1",
+        dateJourne: "2025-01-22",
+        equipementId: "PDA200",
+        login: "admin",
+        password: ""
       );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final successOrNot = data['success'];
+      final successOrNot = data['success'];
+      if (successOrNot) {
         final passage = TpPassage.fromJson(data['data']);
-        
-        if (successOrNot) {
-          // Save passage data to database
-          await _savePassageData(passage);
-          
-          return {
-            'success': true,
-            'passage': passage,
-            'data': data
-          };
-        } else {
-          return {
-            'success': false,
-            'errorMessage': 'API returned failure status'
-          };
-        }
+        await _savePassageData(passage);
+        return {
+          'success': true,
+          'passage': passage,
+          'data': data
+        };
       } else {
         return {
           'success': false,
-          'errorMessage': 'Failed to load data: ${response.statusCode}'
+          'errorMessage': 'API returned failure status'
         };
       }
     } catch (e) {

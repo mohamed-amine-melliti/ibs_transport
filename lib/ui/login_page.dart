@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/api_service.dart'; // Add this import
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,6 +13,10 @@ class _LoginPageState extends State<LoginPage> {
   final _tourCodeController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _isLoading = false; // Add loading state
+  
+  // Create instance of ApiService
+  final ApiService _apiService = ApiService();
 
   @override
   void dispose() {
@@ -116,16 +121,57 @@ class _LoginPageState extends State<LoginPage> {
                         ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              if (_passwordController.text == 'IBIS*2025*') {
-                                Navigator.of(context).pushReplacementNamed('/configuration');
-                              } else if (_passwordController.text == 'tourpassword') { // Replace with your actual logic
-                                Navigator.of(context).pushReplacementNamed('/tour');
-                              } else {
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              
+                              try {
+                                // Special case for admin access
+                                if (_passwordController.text == 'IBS*2025*') {
+                                  Navigator.of(context).pushReplacementNamed('/configuration');
+                                  return;
+                                }
+                                
+                                // Call the API for authentication
+                                final response = await _apiService.authenticateUser(
+                                  centreFortId: "1", // Use the appropriate value
+                                  login: _tourCodeController.text,
+                                  password: _passwordController.text,
+                                );
+                                
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                                
+                                if (response['success'] == false) {
+                                  // Show error message
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text('Erreur de connexion'),
+                                      content: Text(response['message'] ?? 'Erreur inconnue'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.of(context).pop(),
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  // Navigate to admin interface
+                                  Navigator.of(context).pushReplacementNamed('/tour');
+                                }
+                              } catch (e) {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                                
                                 showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                    title: const Text('Erreur de connexion'),
-                                    content: const Text('Mot de passe incorrect. Veuillez réessayer.'),
+                                    title: const Text('Erreur'),
+                                    content: Text('Une erreur est survenue: $e'),
                                     actions: [
                                       TextButton(
                                         onPressed: () => Navigator.of(context).pop(),
@@ -149,10 +195,12 @@ class _LoginPageState extends State<LoginPage> {
                                   Sizes.borderRadiusSmall),
                             ),
                           ),
-                          child: const Text(
-                            'SE CONNECTER',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                          child: _isLoading 
+                            ? const CircularProgressIndicator(color: Colors.white)
+                            : const Text(
+                                'SE CONNECTER',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                         ),
 
                         // Espace entre les boutons
