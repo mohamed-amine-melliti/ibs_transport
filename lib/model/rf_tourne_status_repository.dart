@@ -28,4 +28,42 @@ class RfTourneStatusRepository {
     final result = await db.query(rfTourneStatusTable);
     return result.map((json) => RfTourneStatus.fromJson(json)).toList();
   }
+
+  Future<int> insert(RfTourneStatus status) async {
+    final db = await database;
+    return await db.insert(
+      rfTourneStatusTable,
+      status.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> insertAll(List<RfTourneStatus> statuses) async {
+    final db = await database;
+    final batch = db.batch();
+    
+    for (var status in statuses) {
+      batch.insert(
+        rfTourneStatusTable,
+        status.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    }
+    
+    await batch.commit(noResult: true);
+  }
+
+  Future<void> deleteAll() async {
+    final db = await database;
+    await db.delete(rfTourneStatusTable);
+  }
+
+  Future<void> createTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $rfTourneStatusTable (
+        ${RfTourneStatusFields.id} INTEGER PRIMARY KEY,
+        ${RfTourneStatusFields.libelle} TEXT NOT NULL
+      )
+    ''');
+  }
 }

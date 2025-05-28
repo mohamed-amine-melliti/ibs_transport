@@ -12,6 +12,8 @@ class ConfigurationPage extends StatefulWidget {
 class _ConfigurationPageState extends State<ConfigurationPage> {
   final _formKey = GlobalKey<FormState>();
   final _centreFortController = TextEditingController();
+  final _centreFortLibelleController = TextEditingController();
+
   final _equipementController = TextEditingController();
   final _locationController = TextEditingController(); // NEW
   final _passwordController = TextEditingController();
@@ -33,7 +35,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
         setState(() {
           _centreFortController.text = lastConfig.centreFortId;
           _equipementController.text = lastConfig.pdaId;
-          _locationController.text = lastConfig.url ?? ''; // NEW
+          _locationController.text = lastConfig.apiUrl ?? ''; // NEW
           _configId = lastConfig.id;
         });
       }
@@ -62,23 +64,27 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
           if (configs.isEmpty) {
             config = RfPdaConfig(
               id: 1,
+              centreFortLibelle: '',
               centreFortId: _centreFortController.text,
               pdaId: _equipementController.text,
-              url: _locationController.text, // NEW
+              apiUrl: _locationController.text, // NEW
             );
             await _repository.insert(config);
           } else {
             config = RfPdaConfig(
               id: configs.first.id,
+              centreFortLibelle: '',
+
               centreFortId: _centreFortController.text,
               pdaId: _equipementController.text,
-              url: _locationController.text, // NEW
+              apiUrl: _locationController.text, // NEW
             );
             await _repository.update(config);
           }
 
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Configuration enregistrée avec succès')),
+            const SnackBar(
+                content: Text('Configuration enregistrée avec succès')),
           );
           Navigator.pop(context);
         } catch (e) {
@@ -106,7 +112,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
             icon: const Icon(Icons.logout),
             tooltip: 'Sign Out',
             onPressed: () {
-              Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/login', (route) => false);
             },
           ),
         ],
@@ -129,6 +136,22 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Veuillez saisir l\'ID du centre fort';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16.0),
+
+
+                    TextFormField(
+                  controller: _centreFortLibelleController,
+                  decoration: const InputDecoration(
+                    labelText: 'Libelle centre fort',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez saisir libelle du centre fort';
                     }
                     return null;
                   },
@@ -176,7 +199,9 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {

@@ -31,15 +31,18 @@ class _DbMonitorPageState extends State<DbMonitorPage> {
 
   // Insérer ou mettre à jour une configuration
   void _insertOrUpdateConfig() {
-    if (_centreFortController.text.isNotEmpty && _pdaIdController.text.isNotEmpty) {
+    if (_centreFortController.text.isNotEmpty &&
+        _pdaIdController.text.isNotEmpty) {
       final config = RfPdaConfig(
         id: 1, // Toujours utiliser 1 comme clé primaire
         centreFortId: _centreFortController.text,
+        centreFortLibelle: '',
+        apiUrl: '',
         pdaId: _pdaIdController.text,
       );
-      
+
       _dbMonitor.insertOrUpdateConfig(config);
-      
+
       // Effacer les champs après insertion/mise à jour
       _centreFortController.clear();
       _pdaIdController.clear();
@@ -90,16 +93,17 @@ class _DbMonitorPageState extends State<DbMonitorPage> {
               ],
             ),
           ),
-          
+
           // Affichage des données en temps réel
           Expanded(
             child: StreamBuilder<List<RfPdaConfig>>(
               stream: _dbMonitor.configsStream,
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.waiting &&
+                    !snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                
+
                 if (snapshot.hasError) {
                   return Center(
                     child: Text(
@@ -108,21 +112,22 @@ class _DbMonitorPageState extends State<DbMonitorPage> {
                     ),
                   );
                 }
-                
+
                 final configs = snapshot.data ?? [];
-                
+
                 if (configs.isEmpty) {
                   return const Center(
                     child: Text('Aucune configuration trouvée'),
                   );
                 }
-                
+
                 return ListView.builder(
                   itemCount: configs.length,
                   itemBuilder: (context, index) {
                     final config = configs[index];
                     return Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
                       child: ListTile(
                         title: Text('ID: ${config.id}'),
                         subtitle: Column(

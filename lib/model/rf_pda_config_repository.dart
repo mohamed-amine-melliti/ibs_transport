@@ -67,7 +67,7 @@ class RfPdaConfigRepository {
         ${RfPdaConfigFields.id} INTEGER PRIMARY KEY,
         ${RfPdaConfigFields.pdaId} TEXT NOT NULL,
         ${RfPdaConfigFields.centreFortId} TEXT NOT NULL,
-        ${RfPdaConfigFields.url} TEXT
+        ${RfPdaConfigFields.apiUrl} TEXT
       )
     ''');
   }

@@ -4,7 +4,7 @@ import '../model/tp_tourne.dart';
 
 /// API Service for Tour-related endpoints
 class TourApiService {
-  final String baseUrl = 'http://172.20.20.119:8082/ibs-api';
+  final String baseUrl = 'http://172.20.20.83:8082/ibs-api';
   
   /// Fetch tour opening data from API
   Future<Map<String, dynamic>> fetchTourOpeningData({

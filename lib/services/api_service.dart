@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://172.20.20.83:8082/ibs-api/swagger-ui.html#';
+  static const String baseUrl = 'http://172.20.20.83:8082/ibs-api/swagger-ui.html#/';
   static const String apiDocs = '$baseUrl/api-docs';
   
   String? _authToken;
@@ -15,12 +15,10 @@ class ApiService {
         Uri.parse('$baseUrl/auth/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'centreFortId': '1',
-
-          'username': 'admin',
-          'password': '',
+          'username': username,
+          'password': password,
         }),
-      );   
+      );
       
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -46,8 +44,8 @@ class ApiService {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'centreFortId': centreFortId,
-          'login': "login",
-          'password': "password",
+          'login': login,
+          'password': password,
         }),
       );
       
@@ -162,7 +160,7 @@ class ApiService {
     required String password,
   }) async {
     final response = await http.post(
-      Uri.parse('http://172.20.20.83:8082/ibs-api/swagger-ui.html#/ouvertureJournee'),
+      Uri.parse('http://172.20.20.8:8082/ibs-api/ibs-api/tourne/ouvertureJournee'),
       headers: {'accept': '*/*', 'Content-Type': 'application/json'},
       body: jsonEncode({
         "centreFortId": centreFortId,

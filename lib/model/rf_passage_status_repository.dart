@@ -28,4 +28,42 @@ class RfPassageStatusRepository {
     final result = await db.query(rfPassageStatusTable);
     return result.map((json) => RfPassageStatus.fromJson(json)).toList();
   }
+
+  Future<int> insert(RfPassageStatus status) async {
+    final db = await database;
+    return await db.insert(
+      rfPassageStatusTable,
+      status.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> insertAll(List<RfPassageStatus> statuses) async {
+    final db = await database;
+    final batch = db.batch();
+    
+    for (var status in statuses) {
+      batch.insert(
+        rfPassageStatusTable,
+        status.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    }
+    
+    await batch.commit(noResult: true);
+  }
+
+  Future<void> deleteAll() async {
+    final db = await database;
+    await db.delete(rfPassageStatusTable);
+  }
+
+  Future<void> createTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $rfPassageStatusTable (
+        ${RfPassageStatusFields.id} INTEGER PRIMARY KEY,
+        ${RfPassageStatusFields.libelle} TEXT NOT NULL
+      )
+    ''');
+  }
 }
