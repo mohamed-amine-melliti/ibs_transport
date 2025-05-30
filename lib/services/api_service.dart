@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://172.20.20.83:8082/ibs-api/swagger-ui.html#/';
+  static const String baseUrl = 'http://172.20.20.83:8082/ibs-api';
   static const String apiDocs = '$baseUrl/api-docs';
   
   String? _authToken;

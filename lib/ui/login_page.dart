@@ -126,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                               });
                               try {
                                 // Special case for admin access
-                                if (_passwordController.text == 'IBS*2025*') {
+                                if (_passwordController.text == 'ibs**') {
                                   Navigator.of(context).pushReplacementNamed('/configuration');
                                   return;
                                 }

@@ -190,34 +190,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 ),
                 const SizedBox(height: 16.0),
 
-                // Mot de passe
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: _obscurePassword,
-                  decoration: InputDecoration(
-                    labelText: 'Mot de passe',
-                    border: const OutlineInputBorder(),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscurePassword
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez saisir le mot de passe';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 24.0),
+             
 
                 // Bouton Valider
                 ElevatedButton(
